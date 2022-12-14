@@ -19,6 +19,7 @@ class MoviesController < ApplicationController
       @movies = Movie.with_ratings(@ratings_to_show)
       # Sort the movies by the sort parameter
       if not params[:sort].nil?
+        @sort_column = params[:sort]
         @movies = @movies.order(params[:sort])
       end
     end
