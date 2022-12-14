@@ -18,7 +18,9 @@ class MoviesController < ApplicationController
       # Only display the movies that were check box
       @movies = Movie.with_ratings(@ratings_to_show)
       # Sort the movies by the sort parameter
-      @movies = @movies.order(params[:sort])
+      if not params[:sort].nil?
+        @movies = @movies.order(params[:sort])
+      end
     end
   
     def new
