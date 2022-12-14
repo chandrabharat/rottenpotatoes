@@ -12,4 +12,10 @@ class Movie < ActiveRecord::Base
       return Movie.all.select{ |movie| ratings_list.include? movie.rating }
     end
   end
+
+  def sort_field(params)
+    return self.title if params[:sort] == "title"
+    return self.director if params[:sort] == "director"
+    return self.year if params[:sort] == "year"
+  end
 end
