@@ -5,8 +5,12 @@ class MoviesController < ApplicationController
       @movie = Movie.find(id) # look up movie by unique ID
       # will render app/views/movies/show.<extension> by default
     end
-  
+
     def index
+      if params[:home].nil?
+        params[:ratings] = session[:ratings]
+        params[:sort] = session[:sort]
+      end
       @all_ratings = Movie.all_ratings
       @ratings_to_show = params[:ratings] || {'G' => '1', 'PG' => '1', 'PG-13' => '1', 'R' => '1'}
       @movies = Movie.with_ratings(@ratings_to_show)
@@ -17,6 +21,8 @@ class MoviesController < ApplicationController
       when "release_date"
         @movies = @movies.order(:release_date)
       end
+      session[:ratings] = @ratings_to_show
+      session[:sort] = @sort
     end
   
     def new
