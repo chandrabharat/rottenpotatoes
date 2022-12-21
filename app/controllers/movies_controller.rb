@@ -9,18 +9,18 @@ class MoviesController < ApplicationController
     def index
       @all_ratings = Movie.all_ratings
       # Filter by the checkboxes
-      if params[:ratings].nil?
-        @ratings_to_show = []
-      else
-        @ratings_to_show = params[:ratings]
-      end
+      @ratings_to_show = params[:ratings].nil? ? {'G' => '1', 'PG' => '1', 'PG-13' => '1', 'R' => '1'} : params[:ratings]
 
       # Only display the movies that were check box
       @movies = Movie.with_ratings(@ratings_to_show)
       # Sort the movies by the sort parameter
       if not params[:sort].nil?
-        sort_field = params[:sort]
-        @movies = @movies.sort_by{|movie| movie.sort_field(params)}
+        case params[:sort]
+        when "title"
+          @movies = @movies.order(:title)
+        when "release_date"
+          @movies = @movies.order(:release_date)
+        end
       end
     end
   
